@@ -1,4 +1,4 @@
-package main
+package genent
 
 type MoodleUserData struct {
 	Username  string

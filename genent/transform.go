@@ -1,4 +1,4 @@
-package main
+package genent
 
 type RawEntityTransformer interface {
 	Transform(rawStrs []string) ([]Entity, error)

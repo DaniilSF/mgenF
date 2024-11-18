@@ -1,6 +1,8 @@
 package main
 
 import (
+	"gitlab.com/stud777/mgen/ammgen"
+	"gitlab.com/stud777/mgen/genent"
 	"gitlab.com/stud777/stuff/datagen"
 )
 
@@ -18,13 +20,15 @@ func main() {
 		rawStrs = append(rawStrs, s)
 	}
 
-	var trm RawEntityTransformer // TODO add inititialisation by implementation
+	// === Init Transformer
+	// trm := bamgen.NewTransformHandler()
+	trm := ammgen.NewEntityStruct()
 	ents, err := trm.Transform(rawStrs)
 	if err != nil {
 		panic(err)
 	}
 
-	var datas []UserData
+	var datas []genent.UserData
 	for _, ent := range ents {
 		ud, err := ent.Value()
 		if err != nil {
@@ -33,7 +37,9 @@ func main() {
 		datas = append(datas, ud)
 	}
 
-	var csvstr CsvStorer // TODO add inititialisation by implementation
+	// === Init CsvStorer
+	// csvstr := bamgen.NewCsvHandler()
+	csvstr := ammgen.NewCsv()
 	outFilePath := "./moodleuser.csv"
 	err = csvstr.Save(datas, outFilePath)
 	if err != nil {
