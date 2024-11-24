@@ -23,6 +23,7 @@ func main() {
 	// === Init Transformer
 	// trm := bamgen.NewTransformHandler()
 	trm := ammgen.NewEntityStruct()
+
 	ents, err := trm.Transform(rawStrs)
 	if err != nil {
 		panic(err)
@@ -40,6 +41,7 @@ func main() {
 	// === Init CsvStorer
 	// csvstr := bamgen.NewCsvHandler()
 	csvstr := ammgen.NewCsv()
+
 	outFilePath := "./moodleuser.csv"
 	err = csvstr.Save(datas, outFilePath)
 	if err != nil {

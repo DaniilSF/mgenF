@@ -1,17 +1,23 @@
-package tttest_test
+package test
 
 import (
 	"testing"
 
-	"gitlab.com/alex23030202/test-mgen/ammgen"
-	"gitlab.com/alex23030202/test-mgen/bamgen"
-	"gitlab.com/alex23030202/test-mgen/genent"
+	"gitlab.com/stud777/mgen/ammgen"
+	"gitlab.com/stud777/mgen/bamgen"
+	"gitlab.com/stud777/mgen/genent"
 )
+
+// TODO test names
+// TODO test locations
+// TODO  github.com/stretchr/testify
+// TODO  gen mock
 
 // trm
 func TestTrmAmmgenValid(t *testing.T) {
 	var rawStrs []string
 	rawStrs = append(rawStrs, "Долгих Виктор Виталиевич water@broken.wildflower.com  NULL ")
+
 	trm := ammgen.NewEntityStruct()
 	ents, err := trm.Transform(rawStrs)
 	if err != nil {
@@ -81,6 +87,7 @@ func TestSaveAmmgenNoValid(t *testing.T) {
 func TestTrmBamgenValid(t *testing.T) {
 	var rawStrs []string
 	rawStrs = append(rawStrs, "Долгих Виктор Виталиевич water@broken.wildflower.com  NULL ")
+
 	trm := bamgen.NewTransformHandler()
 	ents, err := trm.Transform(rawStrs)
 	if err != nil {
