@@ -6,26 +6,43 @@ import (
 	"gitlab.com/stud777/mgen/ammgen"
 	"gitlab.com/stud777/mgen/bamgen"
 	"gitlab.com/stud777/mgen/genent"
+
+	"github.com/stretchr/testify/require"
 )
 
 // TODO test names
 // TODO test locations
+
 // TODO  github.com/stretchr/testify
 // TODO  gen mock
 
+type MockDatageGenEmpty struct{}
+
+func (mdg *MockDatageGenEmpty) GetRawUserDataString() (string, error) {
+	return "Долгих Виктор Виталиевич water@broken.wildflower.com  NULL ", nil
+}
+
 // trm
-func TestTrmAmmgenValid(t *testing.T) {
-	var rawStrs []string
-	rawStrs = append(rawStrs, "Долгих Виктор Виталиевич water@broken.wildflower.com  NULL ")
+func TestAmmgenTransformValid(t *testing.T) {
+	// var rawStrs []string
+	// rawStrs = append(rawStrs, "Долгих Виктор Виталиевич water@broken.wildflower.com  NULL ")
+
+	//
+
+	mdg := &MockDatageGenEmpty{}
+
+	s, err := mdg.GetRawUserDataString()
+	require.NoError(t, err)
+	require.NotEmpty(t, s)
+
+	rawStrs := []string{s}
 
 	trm := ammgen.NewEntityStruct()
 	ents, err := trm.Transform(rawStrs)
-	if err != nil {
-		panic(err)
-	}
 
-	t.Log("Tested result", ents[0])
-
+	require.NotEmpty(t, ents)
+	require.NoError(t, err)
+	// require.Eventually()
 }
 
 func TestTrmAmmgenNoValid(t *testing.T) {
@@ -68,17 +85,33 @@ func TestCsvAmmgenNoValid(t *testing.T) {
 	}
 }
 
+type MockTransWithEpmtydata struct{}
+
+func (mtr *MockTransWithEpmtydata) Transform(rawStrs []string) ([]genent.Entity, error) {
+	return []genent.Entity{}, nil
+}
+
 // save
 func TestSaveAmmgenNoValid(t *testing.T) {
-	var users []genent.UserData
-	filePath := "test_output_invalid.csv"
-	cs := ammgen.NewCsv()
+	trm := MockTransWithEpmtydata{}
+	ents, err := trm.Transform(nil)
+	require.NoError(t, err)
 
-	err := cs.Save(users, filePath)
-	if err != nil {
-		t.Fatalf("Did not expect error for empty input, got: %v", err)
+	var datas []genent.UserData
+	for _, ent := range ents {
+		ud, err := ent.Value()
+		if err != nil {
+			panic(err)
+		}
+		datas = append(datas, ud)
 	}
-	t.Log("Empty input test passed")
+
+	filePath := "test_output_invalid.csv"
+
+	storer := ammgen.NewCsv()
+	err = storer.Save(datas, filePath)
+	require.NoErrorf(t, err, "save failed")
+
 }
 
 // ///////

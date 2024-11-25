@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	gen := datagen.RawUserDataGenerator{}
+	var gen genent.RawUserDataGenerator
+	gen = datagen.RawUserDataGenerator{}
+	// gen := datagen.RawUserDataGenerator{}
 
 	userQty := 10
 
