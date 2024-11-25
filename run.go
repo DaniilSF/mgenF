@@ -7,10 +7,8 @@ import (
 )
 
 func main() {
-	var gen genent.RawUserDataGenerator
-	gen = datagen.RawUserDataGenerator{}
-	// gen := datagen.RawUserDataGenerator{}
 
+	gen := datagen.NewRawMusGen()
 	userQty := 10
 
 	var rawStrs []string
